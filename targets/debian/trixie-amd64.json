@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 2,
+  "id": "debian-trixie-amd64",
+  "base": {
+    "distribution": "Debian",
+    "release": "13",
+    "codename": "trixie",
+    "sourcePocket": "security",
+    "architecture": "amd64"
+  },
+  "source": {
+    "format": "3.0 (quilt)",
+    "version": "1.34.5-1+deb13u1",
+    "publication": "https://tracker.debian.org/pkg/c-ares",
+    "publishedAt": "2025-12-18T13:46:02+00:00",
+    "descriptor": {
+      "name": "c-ares_1.34.5-1+deb13u1.dsc",
+      "url": "https://snapshot.debian.org/file/19715153c95c61e8a2af68e1564c67e0679d9c7c",
+      "sha256": "8848358552603070f98f37679a9361b4da8405b841bbf59d002556571670f7f1",
+      "bytes": 2388
+    },
+    "files": [
+      {
+        "name": "c-ares_1.34.5.orig.tar.gz",
+        "role": "upstream-source",
+        "url": "https://snapshot.debian.org/file/2ae693c5be7e79240003c98e3becde2d3a65f8fb",
+        "sha256": "7d935790e9af081c25c495fd13c2cfcda4792983418e96358ef6e7320ee06346",
+        "bytes": 1009261
+      },
+      {
+        "name": "c-ares_1.34.5-1+deb13u1.debian.tar.xz",
+        "role": "debian-packaging",
+        "url": "https://snapshot.debian.org/file/5df2a87f2ef8d68cdd4a7dc56ed97a92f405e81b",
+        "sha256": "f815c2a7bf9dade9e98ac06ecf19de05678d3bd8507e6c0e60e4187320b30be5",
+        "bytes": 21764
+      }
+    ],
+    "signatureVerification": {
+      "verified": false,
+      "note": "The signed Debian Trixie and Trixie-security Sources indexes were verified and their SHA-256 records match these files. The source descriptor's OpenPGP signature was not separately verified."
+    }
+  },
+  "supportedSourceVersions": [
+    "1.34.5-1+deb13u1"
+  ],
+  "packageVersion": "1.34.5-1+deb13u1+getpatched1",
+  "releaseSerial": 1,
+  "changelog": {
+    "distribution": "trixie",
+    "urgency": "high",
+    "maintainer": "GetPatched Maintainers <packages@getpatched.dev>",
+    "date": "Mon, 02 Nov 2026 00:00:00 +0000"
+  },
+  "binaryPackages": [
+    "libcares2",
+    "libc-ares-dev",
+    "libc-ares2"
+  ],
+  "advisoryPackages": [
+    "libcares2"
+  ],
+  "patches": [
+    "cve-2026-69184-pointer-chain"
+  ],
+  "releaseAccess": {
+    "policy": "sponsor-first",
+    "sponsorDelayHours": 168,
+    "sponsorEligibility": "any-active-individual-github-sponsorship-tier",
+    "earlyBinaryLicenseId": "LicenseRef-GetPatched-Early-Binary-1.2",
+    "publicContributionSpdx": "MIT",
+    "earlyUse": ["private", "commercial"],
+    "earlyRedistributionAllowed": false,
+    "publicLicenseScope": "getpatched-authored-contributions-only"
+  },
+  "status": "unreleased-development-candidate"
+}

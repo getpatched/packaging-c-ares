@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 3,
+  "patches": [
+    {
+      "id": "cve-2026-69184-pointer-chain",
+      "kind": "security",
+      "file": "CVE-2026-69184-trixie.patch",
+      "sha256": "8f83e7d5aa0bfce4cbc704558488a734a3ae61c09109a2442e32a8140ce2b853",
+      "title": "Bound DNS name expansion and compression-pointer traversal",
+      "description": "Backports c-ares' parser limits for expanded DNS names and compression-pointer hops to the Trixie 1.34.5 source.",
+      "cves": ["CVE-2026-69184"],
+      "upstream": {
+        "repository": "https://github.com/c-ares/c-ares",
+        "commit": "5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7",
+        "url": "https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7"
+      },
+      "appliesTo": [
+        {
+          "target": "debian-trixie-amd64",
+          "sourceVersion": "1.34.5-1+deb13u1"
+        }
+      ],
+      "dep3": {
+        "origin": "Backport of the upstream v1.34 fix, with regression tests inserted at the corresponding Trixie test-file location.",
+        "forwarded": "not-needed",
+        "lastUpdate": "2026-11-02"
+      },
+      "tests": [
+        {
+          "id": "c-ares-unbounded-pointer-chain",
+          "runner": "getpatched/platform:verification/regression.py",
+          "fixtures": [
+            {
+              "path": "tests/fixtures/c-ares-pointer-chain.c",
+              "sha256": "16f38577f4a2528ffc9da76155dc05f2186891931e919f44974b31f16df74230"
+            }
+          ],
+          "baselineExpectation": "The exact Trixie source accepts the crafted 200-hop backward pointer chain and returns a parsed record.",
+          "patchedExpectation": "The parser returns ARES_EBADNAME and no record for the same bounded input; valid-name boundary compatibility tests pass."
+        }
+      ]
+    }
+  ]
+}

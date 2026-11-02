@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 3,
+  "project": {
+    "name": "GetPatched",
+    "repository": "getpatched/packaging-c-ares",
+    "description": "Declarative, target-specific maintenance recipe for the c-ares source package."
+  },
+  "package": {
+    "source": "c-ares",
+    "description": "Asynchronous DNS resolver library.",
+    "upstreamProject": "c-ares",
+    "upstreamRepository": "https://github.com/c-ares/c-ares",
+    "copyrightFile": "LICENSES/debian-source-copyright"
+  },
+  "targets": [
+    {
+      "id": "debian-trixie-amd64",
+      "file": "targets/debian/trixie-amd64.json"
+    }
+  ],
+  "patchMetadata": "patches/metadata.json",
+  "regressionTests": {
+    "fixturesDirectory": "tests/fixtures",
+    "runner": "getpatched/platform:verification/regression.py"
+  },
+  "licensing": {
+    "publicContributionsSpdx": "MIT",
+    "publicContributionsLicenseFile": "LICENSE",
+    "earlyBinaryLicenseId": "LicenseRef-GetPatched-Early-Binary-1.2",
+    "earlyBinaryTermsFile": "LICENSES/GETPATCHED-EARLY-ACCESS-1.2.md",
+    "upstreamCopyrightFile": "LICENSES/debian-source-copyright",
+    "upstreamLicenses": "preserve"
+  }
+}
