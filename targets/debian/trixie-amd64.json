@@ -33,11 +33,18 @@
         "url": "https://snapshot.debian.org/file/5df2a87f2ef8d68cdd4a7dc56ed97a92f405e81b",
         "sha256": "f815c2a7bf9dade9e98ac06ecf19de05678d3bd8507e6c0e60e4187320b30be5",
         "bytes": 21764
+      },
+      {
+        "name": "c-ares_1.34.5.orig.tar.gz.asc",
+        "role": "upstream-signature",
+        "url": "https://snapshot.debian.org/file/72e579029b651cda1393510c62525d8655816a21",
+        "sha256": "146fcf8ac828903521da52b76852843480a9ee0bdd5e145f81e6df0bb27c40bd",
+        "bytes": 228
       }
     ],
     "signatureVerification": {
       "verified": false,
-      "note": "The signed Debian Trixie and Trixie-security Sources indexes were verified and their SHA-256 records match these files. The source descriptor's OpenPGP signature was not separately verified."
+      "note": "The signed Debian Trixie and Trixie-security Sources indexes and their source file hashes were verified. The descriptor-pinned upstream detached signature is included so dpkg-source can validate the source set, but its OpenPGP signer has not been separately verified."
     }
   },
   "supportedSourceVersions": [
@@ -68,7 +75,10 @@
     "sponsorEligibility": "any-active-individual-github-sponsorship-tier",
     "earlyBinaryLicenseId": "LicenseRef-GetPatched-Early-Binary-1.2",
     "publicContributionSpdx": "MIT",
-    "earlyUse": ["private", "commercial"],
+    "earlyUse": [
+      "private",
+      "commercial"
+    ],
     "earlyRedistributionAllowed": false,
     "publicLicenseScope": "getpatched-authored-contributions-only"
   },
