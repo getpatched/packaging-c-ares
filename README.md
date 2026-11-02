@@ -6,12 +6,12 @@ GetPatched maintains selected security backports for distribution packages whose
 
 | Target | Base source | GetPatched version | Runtime binary | Patch | State |
 |---|---|---|---|---|---|
-| Ubuntu 20.04 Focal, amd64 | `1.15.0-1ubuntu0.5` | `1.15.0-1ubuntu0.5+getpatched1` | `libc-ares2` | Expanded-name length bound | Development candidate; no binary published |
-| Debian 13 Trixie, amd64 | `1.34.5-1+deb13u1` | `1.34.5-1+deb13u1+getpatched1` | `libcares2` | Expanded-name and pointer-hop bounds | Development candidate; no binary published |
+| Ubuntu 20.04 Focal, amd64 | `1.15.0-1ubuntu0.5` | `1.15.0-1ubuntu0.5+getpatched1` | `libc-ares2` | Expanded-name length bound | Hosted verification passed; sponsor flow pending; no binary published |
+| Debian 13 Trixie, amd64 | `1.34.5-1+deb13u1` | `1.34.5-1+deb13u1+getpatched1` | `libcares2` | Expanded-name and pointer-hop bounds | Hosted verification passed; sponsor flow pending; no binary published |
 
-Ubuntu's advisory and OSV data identify the Focal public source as affected by CVE-2026-69184. Its legacy `ares_expand_name.c` parser already limits pointer hops to 50, so the Trixie patch does not apply directly. The Focal backport adds the RFC 1035 255-octet expanded wire-name limit. A source-level probe against the exact hash-matched Focal source accepts an overlong name before the backport and rejects it afterward, while accepting a maximum-valid name in both cases. This is not yet an installed `.deb` regression or full package build.
+Ubuntu's advisory identifies the Focal public source as affected by CVE-2026-69184; the distribution's Focal fix is in ESM. Its legacy `ares_expand_name.c` parser already limits pointer hops to 50, so the Trixie patch does not apply directly. The Focal backport adds the RFC 1035 255-octet expanded wire-name limit. The hosted run built the exact Focal source, passed the installed parser regression and normal consumer checks, removed the target CVE finding from the package-aware scan, and passed the signed APT-client check: [run 41492142682](https://github.com/getpatched/platform/actions/runs/41492142682).
 
-Trixie uses the newer `ares_dns_name_parse()` implementation. Its adapted upstream patch adds the pointer-hop cap and expanded-name bound with parser tests. The source tests passed on amd64; the full suite had one unresolved upstream timeout test failure, and the package-level and installed checks remain incomplete. Neither target is releasable until all build, installed regression, scanner and clean APT verification gates pass.
+Trixie uses the newer `ares_dns_name_parse()` implementation. Its adapted upstream patch adds the pointer-hop cap and expanded-name bound with parser tests. The hosted run passed the complete package test suite, installed regression and consumer checks, removed the target CVE finding from the package-aware scan, and passed the signed APT-client check: [run 41494211851](https://github.com/getpatched/platform/actions/runs/41494211851). The isolated build uses a loopback-only resolver so the upstream timeout test is deterministic while network access remains disabled.
 
 ## Recipe structure
 
@@ -21,6 +21,6 @@ The Focal C probe checks a bounded overlong-name case and the valid 255-octet bo
 
 ## Sponsorship and licenses
 
-Both binaries are intended to be sponsor-first for 168 hours, then public after release checks. All recipe source and patches are public from day one. Every active individual GitHub Sponsors tier gets early binary access; early binaries may be used privately and commercially, but redistribution is prohibited until public promotion. Access ends when GitHub reports sponsorship inactive. GetPatched-authored material is MIT-licensed; c-ares and distribution source notices remain in force. See `LICENSES/GETPATCHED-EARLY-ACCESS-1.2.md`, `LICENSES/upstream-LICENSE.md`, and `LICENSES/debian-source-copyright`.
+Both binaries are configured as sponsor-first for 168 hours after sponsor publication. The sponsor entitlement, revocation and promotion flow is not yet validated, so these verified candidates are not release-eligible and no production binary has been published. All recipe source and patches are public from day one. Every active individual GitHub Sponsors tier is intended to get early binary access; early binaries may be used privately and commercially, but redistribution is prohibited until public promotion. Access ends when GitHub reports sponsorship inactive. GetPatched-authored material is MIT-licensed; c-ares and distribution source notices remain in force. See `LICENSES/GETPATCHED-EARLY-ACCESS-1.2.md`, `LICENSES/upstream-LICENSE.md`, and `LICENSES/debian-source-copyright`.
 
 Builds use each target's exact distribution source archives, not an upstream submodule. Target support is specific to distribution, release and architecture. Adding another release or arm64 requires its own source pin, patch applicability, build, installed regression, scan and APT test.
