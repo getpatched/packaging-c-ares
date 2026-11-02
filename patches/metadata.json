@@ -8,11 +8,13 @@
       "sha256": "8f83e7d5aa0bfce4cbc704558488a734a3ae61c09109a2442e32a8140ce2b853",
       "title": "Bound DNS name expansion and compression-pointer traversal",
       "description": "Backports c-ares' parser limits for expanded DNS names and compression-pointer hops to the Trixie 1.34.5 source.",
-      "cves": ["CVE-2026-69184"],
+      "cves": [
+        "CVE-2026-69184"
+      ],
       "upstream": {
         "repository": "https://github.com/c-ares/c-ares",
-        "commit": "5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7",
-        "url": "https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7.patch"
+        "commit": "5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b",
+        "url": "https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b.patch"
       },
       "appliesTo": [
         {
