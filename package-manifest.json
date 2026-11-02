@@ -14,6 +14,10 @@
   },
   "targets": [
     {
+      "id": "ubuntu-focal-amd64",
+      "file": "targets/ubuntu/focal-amd64.json"
+    },
+    {
       "id": "debian-trixie-amd64",
       "file": "targets/debian/trixie-amd64.json"
     }

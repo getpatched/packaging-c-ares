@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "ubuntu-focal-amd64",
+  "base": {
+    "distribution": "Ubuntu",
+    "release": "20.04",
+    "codename": "focal",
+    "sourcePocket": "updates",
+    "architecture": "amd64"
+  },
+  "source": {
+    "format": "3.0 (quilt)",
+    "version": "1.15.0-1ubuntu0.5",
+    "publication": "https://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/c-ares_1.15.0-1ubuntu0.5.dsc",
+    "publishedAt": "2024-02-28T13:36:54+00:00",
+    "descriptor": {
+      "name": "c-ares_1.15.0-1ubuntu0.5.dsc",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/c-ares_1.15.0-1ubuntu0.5.dsc",
+      "sha256": "b35204e05ac6216b780ddaeb211e6ca43c6bba798d6df23a2c196ce1538b491b",
+      "bytes": 1947
+    },
+    "files": [
+      {
+        "name": "c-ares_1.15.0.orig.tar.gz",
+        "role": "upstream-source",
+        "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/c-ares_1.15.0.orig.tar.gz",
+        "sha256": "6cdb97871f2930530c97deb7cf5c8fa4be5a0b02c7cea6e7c7667672a39d6852",
+        "bytes": 1347687
+      },
+      {
+        "name": "c-ares_1.15.0-1ubuntu0.5.debian.tar.xz",
+        "role": "ubuntu-packaging",
+        "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/c-ares_1.15.0-1ubuntu0.5.debian.tar.xz",
+        "sha256": "b9572e5b5547b7c22febbee0e267bd956194f64cb418cbbf809be862138b8cb5",
+        "bytes": 14868
+      },
+      {
+        "name": "c-ares_1.15.0.orig.tar.gz.asc",
+        "role": "upstream-signature",
+        "url": "https://archive.ubuntu.com/ubuntu/pool/main/c/c-ares/c-ares_1.15.0.orig.tar.gz.asc",
+        "sha256": "39cc1f98533c065b80d98d08bcc1d0d37f2bbb67af3a6c9b5a6ff7c2490bf58c",
+        "bytes": 488
+      }
+    ],
+    "signatureVerification": {
+      "verified": false,
+      "note": "The signed Focal updates and security Sources indexes and their source file hashes were verified. dpkg-source validated the descriptor checksums; the descriptor and detached upstream signatures were not separately verified against an archive keyring."
+    }
+  },
+  "supportedSourceVersions": ["1.15.0-1ubuntu0.5"],
+  "packageVersion": "1.15.0-1ubuntu0.5+getpatched1",
+  "releaseSerial": 1,
+  "changelog": {
+    "distribution": "focal",
+    "urgency": "high",
+    "maintainer": "GetPatched Maintainers <packages@getpatched.dev>",
+    "date": "Mon, 02 Nov 2026 00:00:00 +0000"
+  },
+  "binaryPackages": ["libc-ares2", "libc-ares-dev"],
+  "advisoryPackages": ["libc-ares2"],
+  "patches": ["cve-2026-69184-name-length-focal"],
+  "releaseAccess": {
+    "policy": "sponsor-first",
+    "sponsorDelayHours": 168,
+    "sponsorEligibility": "any-active-individual-github-sponsorship-tier",
+    "earlyBinaryLicenseId": "LicenseRef-GetPatched-Early-Binary-1.2",
+    "publicContributionSpdx": "MIT",
+    "earlyUse": ["private", "commercial"],
+    "earlyRedistributionAllowed": false,
+    "publicLicenseScope": "getpatched-authored-contributions-only"
+  },
+  "status": "unreleased-development-candidate"
+}

@@ -2,6 +2,39 @@
   "schemaVersion": 3,
   "patches": [
     {
+      "id": "cve-2026-69184-name-length-focal",
+      "kind": "security",
+      "file": "CVE-2026-69184-focal.patch",
+      "sha256": "6bc711a379a0dc567551da0f3a98dce7f73c969dbc56af179c71376ca384e1e4",
+      "title": "Reject overlong DNS names after compression-pointer expansion",
+      "description": "Adds the RFC 1035 255-octet expanded wire-name bound to the legacy Focal c-ares 1.15 parser while retaining its existing pointer-hop cap.",
+      "cves": ["CVE-2026-69184"],
+      "upstream": {
+        "repository": "https://github.com/c-ares/c-ares",
+        "commit": "5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b",
+        "url": "https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b.patch"
+      },
+      "appliesTo": [
+        {"target": "ubuntu-focal-amd64", "sourceVersion": "1.15.0-1ubuntu0.5"}
+      ],
+      "dep3": {
+        "origin": "Target-specific adaptation of the upstream CVE-2026-69184 parser fix to Focal's legacy ares_expand_name.c; the existing 50-hop limit is preserved.",
+        "forwarded": "not-needed",
+        "lastUpdate": "2026-11-02"
+      },
+      "tests": [
+        {
+          "id": "c-ares-overlong-expanded-name-focal",
+          "runner": "getpatched/platform:verification/regression.py",
+          "fixtures": [
+            {"path": "tests/fixtures/c-ares-name-length.c", "sha256": "9c6b4e2537c8c5b61e752e563b3f4451d8b2cb101125f10e70fa8c24061fdb39"}
+          ],
+          "baselineExpectation": "The exact Focal 1.15.0 source accepts an expanded DNS wire name longer than 255 octets; a maximum-valid 255-octet name remains accepted.",
+          "patchedExpectation": "The installed parser rejects the same overlong name with ARES_EBADNAME and accepts the maximum-valid 255-octet name."
+        }
+      ]
+    },
+    {
       "id": "cve-2026-69184-pointer-chain",
       "kind": "security",
       "file": "CVE-2026-69184-trixie.patch",

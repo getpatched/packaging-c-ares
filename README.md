@@ -1,30 +1,26 @@
 # GetPatched recipe: c-ares
 
-GetPatched maintains selected security backports for distribution packages whose normal security support has ended. This repository contains the public source recipe, patch and reproducible regression input. It does not contain a forked copy of c-ares; builds fetch the pinned Debian source package and retain Debian's packaging and existing patches.
+GetPatched maintains selected security backports for distribution packages whose normal security support has ended. This repository contains public source recipes, target-specific patches and bounded regression inputs. It does not contain a forked copy of c-ares; builds fetch the pinned distribution source package and retain its packaging and existing patches.
 
-## Current target
+## Targets
 
-| Field | Value |
-|---|---|
-| Target | Debian 13 (Trixie), amd64 |
-| Source | `c-ares` `1.34.5-1+deb13u1` from the signed Trixie security source index |
-| GetPatched version | `1.34.5-1+deb13u1+getpatched1` |
-| Runtime binary | `libcares2` |
-| Access | Sponsor first for 168 hours, then public after release checks |
-| State | Development candidate; no release binary is published |
+| Target | Base source | GetPatched version | Runtime binary | Patch | State |
+|---|---|---|---|---|---|
+| Ubuntu 20.04 Focal, amd64 | `1.15.0-1ubuntu0.5` | `1.15.0-1ubuntu0.5+getpatched1` | `libc-ares2` | Expanded-name length bound | Development candidate; no binary published |
+| Debian 13 Trixie, amd64 | `1.34.5-1+deb13u1` | `1.34.5-1+deb13u1+getpatched1` | `libcares2` | Expanded-name and pointer-hop bounds | Development candidate; no binary published |
 
-Debian Trixie's source predates c-ares 1.34.7, which contains the upstream fix. The five adapted upstream tests were run against the exact Trixie source on amd64: the vulnerable parser accepted four invalid overlong-name or pointer-chain cases; after the backport all five cases passed, including the valid maximum-boundary case. This is source-build evidence only; the complete Debian package build, installed-package regression, package-aware scan and clean APT install still need to pass before release.
+Ubuntu's advisory and OSV data identify the Focal public source as affected by CVE-2026-69184. Its legacy `ares_expand_name.c` parser already limits pointer hops to 50, so the Trixie patch does not apply directly. The Focal backport adds the RFC 1035 255-octet expanded wire-name limit. A source-level probe against the exact hash-matched Focal source accepts an overlong name before the backport and rejects it afterward, while accepting a maximum-valid name in both cases. This is not yet an installed `.deb` regression or full package build.
 
-The package currently targets Trixie only. Debian Bookworm is excluded because the security tracker says it does not contain the vulnerable modern DNS parser; Ubuntu Focal uses an older `ares_expand_name.c` implementation and remains unsupported until its applicability and a distinct backport are proven against that exact source.
+Trixie uses the newer `ares_dns_name_parse()` implementation. Its adapted upstream patch adds the pointer-hop cap and expanded-name bound with parser tests. The source tests passed on amd64; the full suite had one unresolved upstream timeout test failure, and the package-level and installed checks remain incomplete. Neither target is releasable until all build, installed regression, scanner and clean APT verification gates pass.
 
-## Structure and patch
+## Recipe structure
 
-`package-manifest.json` indexes target-specific recipe files. `targets/debian/trixie-amd64.json` pins the source version, Debian snapshot file identifiers, SHA-256 hashes, architecture, package version and release policy. `patches/metadata.json` declares the target-scoped patch, upstream commit, checksum and regression test. The patch `patches/CVE-2026-69184-trixie.patch` adapts upstream commit [`5c8341b`](https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7) to Trixie's older test-file layout while bounding expanded DNS names and compression-pointer hops.
+`package-manifest.json` indexes one recipe file per distribution, release and architecture. Each target file pins its exact source descriptor and archives, hashes, output version, binary packages, applicable patches and release policy. `patches/metadata.json` records target-specific applicability, upstream provenance and regression expectations. Focal's source metadata notes that signed Ubuntu source indexes and file hashes were verified, while source uploader signatures were not separately validated against a keyring.
 
-The checked-in C regression probe creates a bounded DNS packet with a 200-hop backward pointer chain. It reports only parser status and whether a record was returned. It does not attempt to measure resource exhaustion or exercise code execution. The patch also adds upstream parser tests for overlong names and pointer chains.
+The Focal C probe checks a bounded overlong-name case and the valid 255-octet boundary. The Trixie probe checks a bounded 200-hop backward pointer chain and a valid DNS response. Neither probe attempts to measure resource exhaustion or exercise code execution.
 
 ## Sponsorship and licenses
 
-All recipe source and patches are public from day one. For the official binary only, every active individual GitHub Sponsors tier gets access during the first seven days. Early binaries may be used privately and commercially; redistribution is prohibited until public promotion. Access ends when GitHub reports sponsorship inactive. GetPatched-authored material is MIT-licensed; c-ares and Debian source notices remain in force. See `LICENSES/GETPATCHED-EARLY-ACCESS-1.2.md`, `LICENSES/upstream-LICENSE.md`, and `LICENSES/debian-source-copyright`.
+Both binaries are intended to be sponsor-first for 168 hours, then public after release checks. All recipe source and patches are public from day one. Every active individual GitHub Sponsors tier gets early binary access; early binaries may be used privately and commercially, but redistribution is prohibited until public promotion. Access ends when GitHub reports sponsorship inactive. GetPatched-authored material is MIT-licensed; c-ares and distribution source notices remain in force. See `LICENSES/GETPATCHED-EARLY-ACCESS-1.2.md`, `LICENSES/upstream-LICENSE.md`, and `LICENSES/debian-source-copyright`.
 
-Builds use the exact Debian source archive, not an upstream submodule. Target support is specific to Debian release and architecture. Adding Ubuntu, another Debian release, or arm64 requires its own source pin, patch applicability, build, installed regression, scan and APT test.
+Builds use each target's exact distribution source archives, not an upstream submodule. Target support is specific to distribution, release and architecture. Adding another release or arm64 requires its own source pin, patch applicability, build, installed regression, scan and APT test.
