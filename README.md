@@ -7,11 +7,13 @@ GetPatched maintains selected security backports for distribution packages whose
 | Target | Base source | GetPatched version | Runtime binary | Patch | State |
 |---|---|---|---|---|---|
 | Ubuntu 20.04 Focal, amd64 | `1.15.0-1ubuntu0.5` | `1.15.0-1ubuntu0.5+getpatched1` | `libc-ares2` | Expanded-name length bound | Hosted verification passed; sponsor flow pending; no binary published |
-| Debian 13 Trixie, amd64 | `1.34.5-1+deb13u1` | `1.34.5-1+deb13u1+getpatched1` | `libcares2` | Expanded-name and pointer-hop bounds | Hosted verification passed; sponsor flow pending; no binary published |
+| Debian 13 Trixie, amd64 | `1.34.5-1+deb13u1` | `1.34.5-1+deb13u1+getpatched2` | `libcares2` | DNS name bounds; record-count preallocation bound | CVE-2026-69186 verification pending; no binary published |
 
 Ubuntu's advisory identifies the Focal public source as affected by CVE-2026-69184; the distribution's Focal fix is in ESM. Its legacy `ares_expand_name.c` parser already limits pointer hops to 50, so the Trixie patch does not apply directly. The Focal backport adds the RFC 1035 255-octet expanded wire-name limit. The hosted run built the exact Focal source, passed the installed parser regression and normal consumer checks, removed the target CVE finding from the package-aware scan, and passed the signed APT-client check: [run 41492142682](https://github.com/getpatched/platform/actions/runs/41492142682).
 
 Trixie uses the newer `ares_dns_name_parse()` implementation. Its adapted upstream patch adds the pointer-hop cap and expanded-name bound with parser tests. The hosted run passed the complete package test suite, installed regression and consumer checks, removed the target CVE finding from the package-aware scan, and passed the signed APT-client check: [run 41494211851](https://github.com/getpatched/platform/actions/runs/41494211851). The isolated build uses a loopback-only resolver so the upstream timeout test is deterministic while network access remains disabled.
+
+The Trixie source also carries an in-progress backport for CVE-2026-69186. It validates DNS answer, authority, and additional-record counts against the remaining message length before allocating record arrays. The pinned source is still under verification; the README and catalogue must not describe the CVE as fixed until the exact installed baseline and candidate pass the allocation-amplification regression, package tests, scan, and compatibility checks.
 
 ## Recipe structure
 
