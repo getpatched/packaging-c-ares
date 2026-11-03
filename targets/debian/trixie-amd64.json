@@ -50,8 +50,8 @@
   "supportedSourceVersions": [
     "1.34.5-1+deb13u1"
   ],
-  "packageVersion": "1.34.5-1+deb13u1+getpatched1",
-  "releaseSerial": 1,
+  "packageVersion": "1.34.5-1+deb13u1+getpatched2",
+  "releaseSerial": 2,
   "changelog": {
     "distribution": "trixie",
     "urgency": "high",
@@ -66,7 +66,8 @@
     "libcares2"
   ],
   "patches": [
-    "cve-2026-69184-pointer-chain"
+    "cve-2026-69184-pointer-chain",
+    "cve-2026-69186-record-count-allocation"
   ],
   "releaseAccess": {
     "policy": "sponsor-first",

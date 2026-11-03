@@ -82,6 +82,47 @@
           "patchedExpectation": "The parser returns ARES_EBADNAME and no record for the 1100-hop input; a valid 200-hop backward chain and maximum-valid 255-wire-octet name remain accepted, while a 256-octet expanded name is rejected."
         }
       ]
+    },
+    {
+      "id": "cve-2026-69186-record-count-allocation",
+      "kind": "security",
+      "file": "CVE-2026-69186-trixie.patch",
+      "sha256": "112af55b73b87255c7cfeafadbefeb3f6ae3ee966877700476c02a9fc328464d",
+      "title": "Validate DNS record counts before preallocation",
+      "description": "Rejects DNS responses whose advertised answer, authority, and additional record counts cannot fit in the remaining wire data before allocating per-section record arrays.",
+      "cves": [
+        "CVE-2026-69186"
+      ],
+      "upstream": {
+        "repository": "https://github.com/c-ares/c-ares",
+        "commit": "e47c203f91cd8b749c8736bc18d75a31ffdec8f4",
+        "url": "https://github.com/c-ares/c-ares/commit/e47c203f91cd8b749c8736bc18d75a31ffdec8f4.patch"
+      },
+      "appliesTo": [
+        {
+          "target": "debian-trixie-amd64",
+          "sourceVersion": "1.34.5-1+deb13u1"
+        }
+      ],
+      "dep3": {
+        "origin": "Backport of upstream c-ares v1.34 commit e47c203f91cd8b749c8736bc18d75a31ffdec8f4, verified to apply without fuzz after Debian's quilt series and GetPatched's CVE-2026-69184 patch.",
+        "forwarded": "not-needed",
+        "lastUpdate": "2026-11-03"
+      },
+      "tests": [
+        {
+          "id": "c-ares-malformed-record-count-allocation",
+          "runner": "getpatched/platform:verification/regression.py",
+          "fixtures": [
+            {
+              "path": "tests/fixtures/c-ares-record-count.c",
+              "sha256": "a953a2064a1d6af968cf47dd8b7d47499d90fdfccdacf119faa834e0e1846a08"
+            }
+          ],
+          "baselineExpectation": "The exact installed Trixie baseline rejects a 12-byte DNS response advertising 65,535 records in each section only after record-array preallocation, reaching a Massif peak heap above 8 MiB; it also accepts the valid DNS response control.",
+          "patchedExpectation": "The exact installed patched Trixie package rejects the malformed response before large record-array allocation with a Massif peak heap below 8 MiB, while accepting the valid DNS response control."
+        }
+      ]
     }
   ]
 }
