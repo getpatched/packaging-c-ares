@@ -59,8 +59,7 @@
     "date": "Mon, 02 Nov 2026 00:00:00 +0000"
   },
   "binaryPackages": [
-    "libcares2",
-    "libc-ares-dev"
+    "libcares2"
   ],
   "advisoryPackages": [
     "libcares2"
