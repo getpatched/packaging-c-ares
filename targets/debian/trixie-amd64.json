@@ -60,8 +60,7 @@
   },
   "binaryPackages": [
     "libcares2",
-    "libc-ares-dev",
-    "libc-ares2"
+    "libc-ares-dev"
   ],
   "advisoryPackages": [
     "libcares2"

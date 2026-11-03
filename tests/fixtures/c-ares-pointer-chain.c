@@ -1,5 +1,5 @@
 /* Safe regression probe for CVE-2026-69184.
- * Builds one bounded DNS response with a 200-hop backward compression chain.
+ * Builds one bounded DNS response with a 1100-hop backward compression chain.
  * It checks parser behavior without measuring or attempting CPU exhaustion. */
 #include <ares.h>
 #include <stdint.h>
@@ -20,7 +20,7 @@ static void put32zero(uint8_t *data, size_t *length) {
 }
 
 int main(void) {
-  uint8_t packet[2048] = {0};
+  uint8_t packet[4096] = {0};
   const uint8_t valid_packet[] = {
     0x12, 0x34, 0x81, 0x80, 0x00, 0x01, 0x00, 0x01,
     0x00, 0x00, 0x00, 0x00,
@@ -30,7 +30,7 @@ int main(void) {
     0x00, 0x00, 0x00, 0x3c, 0x00, 0x04, 1, 2, 3, 4
   };
   size_t length = 12;
-  const size_t hops = 200;
+  const size_t hops = 1100;
   size_t rdata_offset;
   size_t previous;
   size_t chain_top;
