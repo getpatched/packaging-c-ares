@@ -87,7 +87,7 @@
       "id": "cve-2026-69186-record-count-allocation",
       "kind": "security",
       "file": "CVE-2026-69186-trixie.patch",
-      "sha256": "112af55b73b87255c7cfeafadbefeb3f6ae3ee966877700476c02a9fc328464d",
+      "sha256": "e92a29dc0a6f2d552aa098c38daadba6af0b50bcd3d07635f51a71c30ca54007",
       "title": "Validate DNS record counts before preallocation",
       "description": "Rejects DNS responses whose advertised answer, authority, and additional record counts cannot fit in the remaining wire data before allocating per-section record arrays.",
       "cves": [
