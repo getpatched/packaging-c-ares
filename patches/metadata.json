@@ -8,14 +8,19 @@
       "sha256": "6bc711a379a0dc567551da0f3a98dce7f73c969dbc56af179c71376ca384e1e4",
       "title": "Reject overlong DNS names after compression-pointer expansion",
       "description": "Adds the RFC 1035 255-octet expanded wire-name bound to the legacy Focal c-ares 1.15 parser while retaining its existing pointer-hop cap.",
-      "cves": ["CVE-2026-69184"],
+      "cves": [
+        "CVE-2026-69184"
+      ],
       "upstream": {
         "repository": "https://github.com/c-ares/c-ares",
         "commit": "5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b",
         "url": "https://github.com/c-ares/c-ares/commit/5c8341ba6ff3a8e4e4dfd616f8ed0418838b8b7b.patch"
       },
       "appliesTo": [
-        {"target": "ubuntu-focal-amd64", "sourceVersion": "1.15.0-1ubuntu0.5"}
+        {
+          "target": "ubuntu-focal-amd64",
+          "sourceVersion": "1.15.0-1ubuntu0.5"
+        }
       ],
       "dep3": {
         "origin": "Target-specific adaptation of the upstream CVE-2026-69184 parser fix to Focal's legacy ares_expand_name.c; the existing 50-hop limit is preserved.",
@@ -27,7 +32,10 @@
           "id": "c-ares-overlong-expanded-name-focal",
           "runner": "getpatched/platform:verification/regression.py",
           "fixtures": [
-            {"path": "tests/fixtures/c-ares-name-length.c", "sha256": "9c6b4e2537c8c5b61e752e563b3f4451d8b2cb101125f10e70fa8c24061fdb39"}
+            {
+              "path": "tests/fixtures/c-ares-name-length.c",
+              "sha256": "9c6b4e2537c8c5b61e752e563b3f4451d8b2cb101125f10e70fa8c24061fdb39"
+            }
           ],
           "baselineExpectation": "The exact Focal 1.15.0 source accepts an expanded DNS wire name longer than 255 octets; a maximum-valid 255-octet name remains accepted.",
           "patchedExpectation": "The installed parser rejects the same overlong name with ARES_EBADNAME and accepts the maximum-valid 255-octet name."
@@ -38,9 +46,9 @@
       "id": "cve-2026-69184-pointer-chain",
       "kind": "security",
       "file": "CVE-2026-69184-trixie.patch",
-      "sha256": "8f83e7d5aa0bfce4cbc704558488a734a3ae61c09109a2442e32a8140ce2b853",
+      "sha256": "3e49e3fe257622773b0879c8f6be005bdd5eda25608877e79b682d11590e59f1",
       "title": "Bound DNS name expansion and compression-pointer traversal",
-      "description": "Backports c-ares' parser limits for expanded DNS names and compression-pointer hops to the Trixie 1.34.5 source.",
+      "description": "Backports RFC 1035 expanded wire-name length enforcement and a 1024-pointer parser work bound to Debian Trixie, with compatibility coverage for valid deep chains.",
       "cves": [
         "CVE-2026-69184"
       ],
@@ -58,7 +66,7 @@
       "dep3": {
         "origin": "Backport of the upstream v1.34 fix, with regression tests inserted at the corresponding Trixie test-file location.",
         "forwarded": "not-needed",
-        "lastUpdate": "2026-11-02"
+        "lastUpdate": "2026-11-03"
       },
       "tests": [
         {
@@ -67,11 +75,11 @@
           "fixtures": [
             {
               "path": "tests/fixtures/c-ares-pointer-chain.c",
-              "sha256": "16f38577f4a2528ffc9da76155dc05f2186891931e919f44974b31f16df74230"
+              "sha256": "d52e647f85470391fe9128922be7a4f24c52d14f77fa20a11d39616cfef9f0a1"
             }
           ],
-          "baselineExpectation": "The exact Trixie source accepts the crafted 200-hop backward pointer chain and returns a parsed record.",
-          "patchedExpectation": "The parser returns ARES_EBADNAME and no record for the same bounded input; valid-name boundary compatibility tests pass."
+          "baselineExpectation": "The exact Trixie source accepts the crafted 1100-hop backward pointer chain and returns a parsed record; the 200-hop valid deep-chain control also parses.",
+          "patchedExpectation": "The parser returns ARES_EBADNAME and no record for the 1100-hop input; a valid 200-hop backward chain and maximum-valid 255-wire-octet name remain accepted, while a 256-octet expanded name is rejected."
         }
       ]
     }
