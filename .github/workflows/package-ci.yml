@@ -1,0 +1,27 @@
+name: Package CI
+
+on:
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+    inputs:
+      drift:
+        description: Check source and dependency drift
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    if: github.event_name != 'schedule' && !inputs.drift
+    uses: getpatched/actions/.github/workflows/package-ci.yml@67bb1a2e9f477b62c13b9e3fd1fc34951593c473
+    with:
+      tooling_ref: 67bb1a2e9f477b62c13b9e3fd1fc34951593c473
+  drift:
+    if: github.event_name == 'schedule' || inputs.drift
+    uses: getpatched/actions/.github/workflows/package-ci.yml@67bb1a2e9f477b62c13b9e3fd1fc34951593c473
+    with:
+      tooling_ref: 67bb1a2e9f477b62c13b9e3fd1fc34951593c473
+      drift: true
