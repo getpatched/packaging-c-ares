@@ -1,4 +1,5 @@
 #include <arpa/inet.h>
+#include <sys/select.h>
 #include <ares.h>
 #include <assert.h>
 #include <netdb.h>
@@ -10,7 +11,7 @@ static void resolved(void *data, int status, int timeouts, struct hostent *host)
 
     assert(status == ARES_SUCCESS && timeouts == 0);
     assert(host && host->h_addrtype == AF_INET);
-    assert(host->h_length == sizeof(expected) && host->h_addr_list[0]);
+    assert(host->h_length == (int)sizeof(expected) && host->h_addr_list[0]);
     assert(inet_pton(AF_INET, "127.0.0.1", &expected) == 1);
     assert(memcmp(host->h_addr_list[0], &expected, sizeof(expected)) == 0);
     ++*calls;
