@@ -22,8 +22,14 @@ jobs:
     with:
       tooling_ref: 1510886ca6ca0ebda4e45fa135c2d2533c3e6dff
   drift:
+    name: Drift (${{ matrix.branch }})
     if: github.event_name == 'schedule' || inputs.drift
-    uses: getpatched/actions/.github/workflows/package-ci.yml@1510886ca6ca0ebda4e45fa135c2d2533c3e6dff
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: ["getpatched/focal", "getpatched/debian-trixie"]
+    uses: getpatched/actions/.github/workflows/package-ci.yml@ef3f23009b189a210ecbf2c7f2d6d218abb95adc
     with:
-      tooling_ref: 1510886ca6ca0ebda4e45fa135c2d2533c3e6dff
+      tooling_ref: ef3f23009b189a210ecbf2c7f2d6d218abb95adc
       drift: true
+      recipe_ref: refs/heads/${{ matrix.branch }}
