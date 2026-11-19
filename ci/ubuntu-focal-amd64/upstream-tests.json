@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "suites": [
+    {
+      "name": "Configure patched c-ares unit-test build",
+      "command": [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "/build/cares-unit",
+        "-DCARES_BUILD_TESTS=ON",
+        "-DCARES_STATIC=ON",
+        "-DCARES_SHARED=OFF"
+      ],
+      "timeoutSeconds": 600
+    },
+    {
+      "name": "Build c-ares unit tests",
+      "command": [
+        "cmake",
+        "--build",
+        "/build/cares-unit",
+        "--target",
+        "arestest"
+      ],
+      "timeoutSeconds": 600
+    },
+    {
+      "name": "c-ares library initialization",
+      "command": [
+        "bash",
+        "-eu",
+        "-c",
+        "/build/cares-unit/bin/arestest --gtest_filter=LibraryInit.Basic:LibraryInit.Nested:LibraryInit.BasicChannelInit --gtest_output=xml:/tmp/cares-unit.xml; python3 -c \"import xml.etree.ElementTree as E; r=E.parse('/tmp/cares-unit.xml').getroot(); assert int(r.get('tests'))==3 and int(r.get('failures'))==0\""
+      ],
+      "timeoutSeconds": 600
+    }
+  ]
+}
